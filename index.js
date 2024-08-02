@@ -3,6 +3,9 @@ const mongoose = require("mongoose");
 const Product = require("./models/product.model.js");
 const app = express();
 
+const MONGODB_URI = "mongodb+srv://adminpixel:afBWw9lTUeU48h5H@backenddb.pereh3w.mongodb.net/Node-API?retryWrites=true&w=majority&appName=BackendDB";
+const PORT = 3000;
+
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 
@@ -72,15 +75,16 @@ app.delete("/api/product/:id", async (req, res) => {
 });
 
 mongoose
-  .connect(
-    "mongodb+srv://adminpixel:afBWw9lTUeU48h5H@backenddb.pereh3w.mongodb.net/Node-API?retryWrites=true&w=majority&appName=BackendDB"
-  )
+  .connect(MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
   .then(() => {
     console.log("Connected to Database!");
-    app.listen(3000, () => {
-      console.log("Server os running on port 3000");
+    app.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}`);
     });
   })
-  .catch(() => {
-    console.log("Connection failed");
+  .catch((error) => {
+    console.error("Connection failed", error);
   });
